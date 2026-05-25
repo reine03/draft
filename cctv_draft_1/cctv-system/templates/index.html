@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCTV Monitoring System</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #00adb5;
+            margin-top: 30px;
+        }
+
+        .video-container {
+            margin-top: 20px;
+            border: 4px solid #393e46;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            background-color: #000;
+            width: 720px;
+            max-width: 100%;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #eeeeee;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>CCTV LIVE STREAM CONTROL</h1>
+
+<div class="video-container">
+    <img id="videoStream" alt="Connecting to Camera Tool...">
+
+    <script>
+        async function loadSecureStream() {
+            try {
+                // Request secure token
+                const response = await fetch('/request_stream_token', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                // Attach token to video feed URL
+                document.getElementById('videoStream').src =
+                    `/video_feed?token=${data.stream_token}`;
+
+            } catch (error) {
+                console.error("Failed to load secure stream:", error);
+            }
+        }
+
+        loadSecureStream();
+    </script>
+</div>
+
+<div class="status">
+    <p>
+        System Status:
+        <span style="color: #4caf50;">
+                ● Connected & Logging
+            </span>
+    </p>
+</div>
+
+</body>
+
+</html>
